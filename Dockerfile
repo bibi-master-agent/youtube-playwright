@@ -5,7 +5,8 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN npm install
+RUN npx playwright install chromium
 
 COPY . .
 
-CMD ["npx","functions-framework","--target=youtubeAutomation","--port=8080"]
+CMD ["npx","functions-framework","--target=helloHttp","--port=8080"]
