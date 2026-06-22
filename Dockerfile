@@ -5,8 +5,15 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN npm install
+
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+
 RUN npm exec -- playwright install --with-deps chromium
+
+RUN chmod -R 777 /ms-playwright
 
 COPY . .
 
-CMD ["npx","functions-framework","--target=helloHttp","--port=8080"]
+EXPOSE 8080
+
+CMD ["npm", "start"]
