@@ -2,23 +2,26 @@ import { http } from '@google-cloud/functions-framework';
 import { chromium } from 'playwright';
 
 http('helloHttp', async (req, res) => {
-  res.set('Content-Type', 'application/json');
+  try {
+    const browser = await chromium.launch({
+      executablePath: '/ms-playwright/chromium-1187/chrome-linux/chrome',
+      headless: true,
+      args: ['--no-sandbox']
+    });
 
-  const uploadId =
-    req.body?.uploadId ||
-    req.query?.uploadId ||
-    null;
+    await browser.close();
 
-  const browser = await chromium.launch({
-    headless: true,
-    args: ['--no-sandbox']
-  });
+    res.status(200).send({
+      ok: true,
+      message: 'Playwright browser opened successfully'
+    });
 
-  await browser.close();
+  } catch (error) {
+    console.error(error);
 
-  res.status(200).send({
-    ok: true,
-    message: 'Playwright browser opened successfully',
-    uploadId
-  });
+    res.status(500).send({
+      ok: false,
+      error: error.message
+    });
+  }
 });
