@@ -1,0 +1,9 @@
+{
+  "name": "youtube-playwright",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.4.0",
+    "playwright": "^1.53.0"
+  }
+}
