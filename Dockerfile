@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN npm install
-RUN nxp playwright install --with-deps chromiun
+RUN npm exec -- playwright install --with-deps chromium
 
 COPY . .
 
