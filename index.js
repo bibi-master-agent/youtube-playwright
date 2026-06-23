@@ -1,27 +1,32 @@
-import { http } from '@google-cloud/functions-framework';
-import { chromium } from 'playwright';
+import express from "express";
+import { chromium } from "playwright";
 
-http('helloHttp', async (req, res) => {
+const app = express();
+app.use(express.json());
+
+app.get("/", async (req, res) => {
   try {
     const browser = await chromium.launch({
-      executablePath: '/ms-playwright/chromium-1187/chrome-linux/chrome',
       headless: true,
-      args: ['--no-sandbox']
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
 
     await browser.close();
 
-    res.status(200).send({
+    res.status(200).json({
       ok: true,
-      message: 'Playwright browser opened successfully'
+      message: "Playwright works in Cloud Run"
     });
-
   } catch (error) {
-    console.error(error);
-
-    res.status(500).send({
+    console.error("PLAYWRIGHT ERROR:", error);
+    res.status(500).json({
       ok: false,
       error: error.message
     });
   }
+});
+
+const port = process.env.PORT || 8080;
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Server running on port ${port}`);
 });
