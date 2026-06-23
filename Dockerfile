@@ -1,16 +1,10 @@
-FROM mcr.microsoft.com/playwright:v1.53.0
+FROM mcr.microsoft.com/playwright:v1.53.0-jammy
 
 WORKDIR /app
 
 COPY package*.json ./
 
 RUN npm install
-
-ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
-
-RUN npm exec -- playwright install --with-deps chromium
-
-RUN chmod -R 777 /ms-playwright
 
 COPY . .
 
